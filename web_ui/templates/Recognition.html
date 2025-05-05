@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alzheimer's disease Analyzer</title>
+    <!-- 引入Bootstrap CSS文件 -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .breathing-bg {
+            background-image: url(../static/images/MedicalScience.jpg);
+            background-size: cover;
+            width: 100vw;
+            height: 100vh;
+            animation: breathe 4.5s ease-in-out infinite alternate;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .file-and-button-container {
+            position: relative;
+            text-align: center; /* Center align everything */
+        }
+
+        .diagnosis-box {
+            width: 60%;
+            height: 100%;
+            background-color: aliceblue;
+            border-radius: 10px;
+            background-color: rgba(240, 248, 255, 0.5);
+            z-index: 2;
+            position: absolute;
+            top: 0;
+            left: 20%;
+        }
+
+
+        @keyframes breathe {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.05);
+            }
+        }
+
+        .file-zone {
+            position: relative;
+            margin-bottom: 0; /* 确保文件区与按钮之间无间隙 */
+        }
+
+        .button-container {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px; /* 可调整此值以改变与文件区的间隔 */
+        }
+
+        .get-diagnose {
+        {#position: absolute;#}{#top: calc(100% + 10px);#}{#/* 现在根据.file-zone的顶部定位 */#}{#left: 50%;#}{#transform: translateX(-50%);#}{#display: flex;#}{#justify-content: center;#}{#align-items: center;#}{#width: 200px;#}{#height: 50px;#}{#margin-top: 10px;#}{#background-color: gold;#}{#font-weight: bold;#}{#font-size: 20px;#}{#text-align: center;#}{#border-radius: 5px;#} width: 200px;
+            height: 50px;
+            background-color: gold;
+            font-weight: bold;
+            font-size: 20px;
+            text-align: center;
+            border-radius: 5px;
+
+        }
+
+
+        /* 去除 .get-diagnose:hover 中的transform属性 */
+        .get-diagnose:hover {
+            background-color: #0066ff;
+        }
+
+        .drop-zone {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            height: 400px;
+            border: 3px dashed;
+            border-color: #007bff;
+            border-radius: 5px;
+            padding: 30px;
+            margin-bottom: 20px;
+            color: black;
+            cursor: pointer;
+        }
+
+        #drop-zone-icon {
+            color: #007bff;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+            font-size: 15rem;
+        }
+
+        #drop-zone-icon:hover {
+            color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        .drop-zone-text {
+            font-size: 24px;
+            margin-top: 10px;
+            color: black;
+        }
+
+        {#.result-display {#}
+        {#    display: none; /* 初始设置为不显示，直到有结果 */#}
+        {#    flex-direction: column; /* 设置为垂直排列 */#}
+        {#    align-items: center; /* 水平居中 */#}
+        {#    justify-content: center; /* 垂直居中 */#}
+        {#    height: 200px; /* 根据需要调整高度 */#}
+        {#    width: 70%; /* 宽度调整为100% */#}
+        {#    background-color: #f8f9fa; /* 背景颜色 */#}
+        {#    color: #333; /* 字体颜色 */#}
+
+
+        .result-display {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80%; /* This width should be enough to contain the canvas and any padding */
+            height: 460px; /* Adjust this value to fit the chart */
+            padding: 20px; /* Provide some spacing inside the div */
+            background-color: #f8f9fa;
+            {#margin: auto; /* Center the div in the viewport */#}
+
+            margin: 30px auto 0;
+        }
+
+        #resultText {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        #myChart {
+            width: 800px; /* Full width of the result-display div */
+            max-width: 800px; /* Maximum width of the chart */
+            margin: 20px 0; /* Margin top and bottom for spacing */
+            background-color: #ffffff; /* 背景色为白色，确保图表易于阅读 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加轻微的阴影以提升美观 */
+            border-radius: 5px; /* 轻微圆角 */
+        }
+
+    </style>
+
+</head>
+
+<body>
+<div class="container-fluid p-0 breathing-bg">
+</div>
+<div class="diagnosis-box">
+    <div class="file-and-button-container">
+        <div class="file-zone" id="file-zone">
+            <div class="drop-zone" id="drop-zone">
+                <i class="fas fa-upload fa-3x" id="drop-zone-icon"></i> <!-- Font Awesome 图标 -->
+                <p class="drop-zone-text">
+                    Drag and drop your image here or click to select a file.
+                </p>
+            </div>
+            <input type="file" id="fileInput" hidden/>
+        </div>
+        <div class="button-container">
+            <button class="get-diagnose" id="diagnoseButton">
+                Get Analysis
+            </button>
+        </div>
+    </div>
+    <div class="result-display" id="result">
+        <div id="resultText"></div>
+        <canvas id="myChart" width="300" height="150"></canvas>
+    </div>
+</div>
+</body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('fileInput');
+        const diagnoseButton = document.getElementById('diagnoseButton');
+        const resultTextDiv = document.getElementById('resultText');
+        const ctx = document.getElementById('myChart').getContext('2d');
+        let myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Benign', 'Malignant'],
+                datasets: [{
+                    labels: ['Mild Dementia', 'Moderate Dementia', 'Non Demented', 'Very mild Dementia'],
+                    data: [0, 0, 0, 0],// 初始化四个分类
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        formatter: (value) => `${(value * 100).toFixed(1)}%`,
+                        font: {
+                            weight: 'bold',
+                            size: 14
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                const label = context.dataset.label || '';
+                                const value = context.parsed.y || 0;
+                                return `${label}: ${(value * 100).toFixed(2)}%`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1,
+                        ticks: {
+                            callback: (value) => `${(value * 100).toFixed(0)}%`
+                        }
+                    }
+                }
+            }
+        });
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', handleFiles, false);
+
+        function handleFiles() {
+            const fileList = this.files;
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                let img = document.createElement('img');
+                img.src = event.target.result;
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '100%';
+
+                dropZone.innerHTML = '';
+                dropZone.appendChild(img);
+            };
+
+            if (fileList.length > 0) {
+                reader.readAsDataURL(fileList[0]);
+            }
+        }
+
+        diagnoseButton.addEventListener('click', function () {
+            if (!fileInput.files.length) {
+                alert('Please select a file to upload.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            fetch('/Recognition', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    // resultTextDiv.textContent = `Diagnosis Result: ${data.prediction}`;
+                    // document.getElementById('result').style.display = 'flex'; // 显示结果区域
+                    const stageOrder = ['Mild Dementia', 'Moderate Dementia', 'Non Demented', 'Very mild Dementia'];
+                    const probabilities = stageOrder.map(stage => data.probabilities[stage]);
+                    myChart.data.datasets[0].data = probabilities;
+                    myChart.update();
+                    resultTextDiv.innerHTML = `
+                    <h4>The analyse result：<span class="text-primary">${data.prediction}</span></h4>
+                    <p class="text-muted">Highest confidence level：${Math.max(...probabilities).toFixed(4)}</p>
+                `;
+
+                document.getElementById('result').style.display = 'flex';
+                })
+
+                .catch(error => {
+                    console.error('Error:', error);
+                resultTextDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        ${error.message || 'error'}
+                    </div>
+                `;
+                document.getElementById('result').style.display = 'flex';
+                });
+        });
+    });
+</script>
+
+</html>

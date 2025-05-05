@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breat Cancer Diagnosis</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:700,900" rel="stylesheet">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            height: 1500px;
+        }
+
+        .shell {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        /* 修复header的样式，确保它是一个flex容器 */
+        header {
+            display: flex;
+            justify-content: center;
+            /* 水平居中 */
+            align-items: center;
+            flex-direction: column;
+            /* 垂直居中 */
+            height: 700px;
+            width: 100%;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 100%);
+            transition: clip-path 0.5s ease;
+        }
+
+        /* 调整h2的样式 */
+        header h2 {
+            font-size: 50px;
+            color: #000000;
+            /* 这里加上颜色以便在深色背景上看得清楚 */
+            text-align: center;
+            width: 100%;
+            /* 确保标题宽度占满容器宽度 */
+            position: absolute;
+            /* 使标题脱离文档流，不受.img影响 */
+            z-index: 10;
+            /* 确保标题显示在图片上方 */
+        }
+
+        /* .CELL {
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 0px;
+            font-size: 70px;
+            background-color: #2850ff;
+        } */
+
+        .CELL {
+            text-align: center;
+            width: 100%;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-size: 70px;
+            background: linear-gradient(to bottom, white 0%, #375cff 100%);
+            /* 添加渐变背景 */
+            color: black;
+            /* 设置文本颜色为白色 */
+        }
+
+        /* 调整图片容器的样式 */
+        .img {
+            position: relative;
+            /* 使图片相对定位 */
+            width: 100%;
+            height: 100%;
+            background: url('../static/images/1.jpg') no-repeat center center;
+            /* 确保图片居中显示 */
+            background-size: cover;
+            transform: scale(1);
+            transition: transform 0.5s ease;
+            z-index: 2;
+            /* 图片在标题之下 */
+        }
+
+        .img {
+            width: 100%;
+            height: 100%;
+            background: url(../static/images/3.jpg);
+            background-size: cover;
+            transform: scale(1);
+            transition: transform 0.5s ease;
+        }
+
+        .main {
+            width: 100%;
+            height: 255px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 0px;
+            /* background-color: linear-gradient(to bottom, #375cff 30%, #123aeb 100%); */
+            background-color: #375cff;
+            overflow: hidden;
+        }
+
+
+        .main h2 {
+            font-size: 50px;
+            margin-bottom: 40px;
+            text-align: center;
+            width: 100%;
+        }
+
+
+        .main span {
+            padding: 0 100px;
+            font-size: 30px;
+        }
+
+        @import url('https://fonts.googleapis.com/css?family=Lato:700,900');
+
+        @font-face {
+            font-family: Arno Pro;
+            src: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/ArnoPro-Regular.otf);
+            font-style: normal;
+        }
+
+        p {
+            font--family: Arno Pro, serif;
+            font--size: 1.4rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        p.credits {
+            font-style: italic;
+            text-indent: 0 !important;
+            margin: 1rem 0;
+        }
+
+        p a {
+            font-weight: bolder;
+            color: #000;
+            text-decoration: none;
+        }
+
+        @supports (font-varient-caps: small-caps) {
+            .multicol:first-of-type p:first-of-type {
+                font-varient-caps: small-caps;
+            }
+        }
+
+
+        p:not(:first-of-type) {
+            text-indent: 1.4rem;
+        }
+
+        .multicol {
+            column-count: 4;
+            column-gap: 2rem;
+        }
+
+        multicol + img {
+            margin: 2rem 0;
+        }
+
+        article {
+            width: 100%;
+            margin: 0 auto 4rem;
+        }
+
+
+        article img {
+            width: 100%;
+            height: auto;
+
+        }
+
+        article header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+        }
+
+        article h1 {
+            margin-top: 0;
+            font-size: 3rem;
+        }
+
+        article h2 {
+            break-after: column;
+            font-size: 1.5rem;
+        }
+
+        h1,
+        h2 {
+            font-family: Lato, sans-serif;
+        }
+
+        @media all and (max-width: 1600px) {
+            .multicol {
+                column-count: 3;
+            }
+        }
+
+        @media all and (max-width: 800px) {
+            article h2 {
+                break-after: avoid;
+            }
+
+            .multicol {
+                column-count: 1;
+            }
+        }
+
+        @media all and (max-width: 600px) {
+            body {
+                margin: 0;
+            }
+
+            article {
+                width: 100%;
+            }
+
+            .multicol {
+                padding: 0 1rem;
+            }
+
+            article header {
+                margin-bottom: 2.5rem;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            h1 {
+                margin-bottom: 0;
+            }
+        }
+
+
+        .DataCards {
+            background-color: gold
+        }
+
+
+        .dataset-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .dataset-card {
+            width: 30%;
+            /* Adjust the width as needed */
+            text-align: center;
+            /* Center align the text and image */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Simple box shadow for styling */
+            margin: 0 10px;
+            /* Add some space between the cards */
+            background-color: white;
+            /* Card background color */
+            border-radius: 8px;
+            /* Optional: rounds the corners of the cards */
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .dataset-card img {
+            width: 100%;
+            /* Make the image fill the card width */
+            height: auto;
+            /* Keep the image's aspect ratio */
+            border-radius: 8px 8px 0 0;
+            /* Optional: round the top corners of the image */
+        }
+
+        .dataset-card p {
+            margin: 0 0 20px 0;
+        }
+
+        {#.dataset-card a {#}
+        {#    display: block;#}
+        {#    /* Block display makes the link fill the width of the card */#}
+        {#    margin-top: 20px;#}
+        {#    /* Add some space above the link */#}
+        {#    text-decoration: none;#}
+        {#    /* Remove the underline from the link */#}
+        {#    color: #007bff;#}
+        {#    /* Link color */#}
+        {#    font-weight: bold;#}
+        {#    /* Make the link text bold */#}
+        {#    text-align: right;#}
+        {#    position: absolute;#}
+        {#    bottom: 20px;#}
+        {#    font-size: 32px;#}
+
+        #}#}
+
+        .link-container {
+            margin-top: auto; /* 将链接推到底部 */
+            width: 100%; /* 确保占满卡片宽度 */
+            text-align: right; /* 链接文本右对齐 */
+        }
+
+        .link-container a {
+            font-size: 18px; /* 增大字体大小 */
+            color: #007bff; /* 或者你喜欢的颜色 */
+            font-weight: bold; /* 加粗字体 */
+            text-decoration: none; /* 移除下划线 */
+        }
+
+        .link-container a:hover {
+            text-decoration: underline; /* 鼠标悬停时添加下划线，增强用户体验 */
+        }
+
+        .dataset-card a:hover {
+            text-decoration: underline;
+            /* Add underline on hover for better UX */
+        }
+
+
+        /* .data-cards-title{
+            text-align: center;
+            width: 100%;
+            margin-top: 0px;
+            margin-bottom: auto;
+            font-size: 60px;
+
+            background: linear-gradient(to bottom, #375cff 0%, rgb(255, 217, 0) 100%);
+        } */
+
+        .data-cards-title {
+            text-align: center;
+            width: 100%;
+            margin-top: 0px;
+            margin-bottom: auto;
+            font-size: 60px;
+            background: linear-gradient(to bottom, #375cff 0%, rgb(255, 217, 0) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            /* Set the text color to transparent */
+            -webkit-text-fill-color: transparent;
+            /* For webkit browsers */
+            display: inline-block;
+            /* Required for gradients in some cases */
+        }
+
+        .diagnosis-button {
+            display: inline-block;
+            background-color: #000000;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 20px;
+            margin-top: 0px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 50px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .diagnosis-button:hover {
+            background-color: #0066ff;
+            transform: scale(1.04);
+        }
+
+        .header-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+
+        /*
+                .background-panel {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: green;
+                    z-index: 1;
+                    clip-path: polygon(0 0, 100% 0%, 100% 0%, 0 0%);
+                    transition: clip-path 0.5s ease-out;
+                }
+
+                .content-container {
+                    position: absolute;
+                    right: 20px;
+                    bottom: 20px;
+                    text-align: right;
+                }
+
+                .diagnose-button {
+                    padding: 10px 20px;
+                    background-color:  gold;
+                    color: black;
+                    text-decoration: none;
+                    border-radius: 5px;
+                }
+
+                p {
+                    color:white;
+                    margin-top: 10px;
+                } */
+
+    </style>
+
+
+</head>
+
+<body>
+<div class="shell">
+    <header>
+
+        <div class="img"></div>
+        <h2>Multimodal recognition platform for Alzheimer's disease</h2>
+        <div class="header-content">
+            <a href="/Recognition" class="diagnosis-button">Analysis</a>
+        </div>
+
+    </header>
+
+    <div class="CELL">
+        Display of Micro Scope Cancer Cells Images
+    </div>
+
+    <div class="main">
+        <main>
+            <article>
+
+                <img src="../static/images/Mix2.jpg" alt="">
+
+            </article>
+        </main>
+    </div>
+
+    <div class="data-cards-title">
+        <h2>
+            Common Alzheimer's disease Datasets Introduction
+        </h2>
+    </div>
+    <div class="DataCards">
+        <div class="dataset-container">
+            <div class="dataset-card">
+                <img src="../static/images/4.jpg" alt="Dataset 1">
+                <p>
+                    This dataset contains clinical and neuroimaging metadata for 168 patients, categorized into Nondemented, Demented,
+                    and Converted groups. Key features include demographic variables (age, sex, education level), cognitive scores (MMSE, CDR),
+                    and brain imaging metrics (eTIV, nWBV, ASF). The data spans a wide age range (60–98 years) and includes severity classifications
+                    for Alzheimer’s progression via CDR (0–2). Missing values exist in some fields (e.g., MMSE, EDUC). It supports studies on dementia
+                    detection, cognitive decline modeling, and biomarker analysis, with potential applications in machine learning for early disease
+                    prediction.
+                </p>
+                <div class="link-container">
+                    <a href="https://www.heywhale.com/mw/dataset/661e7466d60ce3fe5b15741d/file"
+                       target="_blank">
+                        Know more about the dataset
+                    </a>
+                </div>
+            </div>
+
+            <div class="dataset-card">
+                <img src="../static/images/dataset-cover (1).png" alt="Dataset 2">
+                <p>
+                    This dataset comprises resting-state EEG recordings from 88 participants, including 36 Alzheimer’s disease (AD),
+                    23 frontotemporal dementia (FTD), and 29 cognitively normal (CN) subjects.  Clinical metadata includes
+                    MMSE scores (AD: 17.75±4.5, FTD: 22.17±8.22, CN: 30) and disease duration (median: 25 months for AD/FTD).
+                    EEG data were collected using a Nihon Kohden device with 19 scalp electrodes (10-20 system) at 500 Hz,
+                    with recordings lasting 12–13.8 minutes per session.  Preprocessing involved band-pass filtering (0.5–45 Hz),
+                    re-referencing to A1-A2, and artifact removal via ASR and ICA to eliminate eye/jaw movements.  Raw data (.eeg)
+                    and preprocessed BIDS-compliant .set files are provided, supporting studies on neurophysiological patterns in dementia.
+                    Offering a resource for developing EEG-based biomarkers and machine learning models in dementia research.
+                </p>
+                <div class="link-container">
+                    <a href="https://www.kaggle.com/datasets/yosftag/open-nuro-dataset" target="_blank">
+                        Know more about the dataset
+                    </a>
+                </div>
+            </div>
+
+            <div class="dataset-card">
+                <img src="../static/images/dataset-cover.PNG" alt="Dataset 3">
+                <p>
+                    The OASIS MRI dataset is a publicly available resource containing 80,000 brain MRI images, aimed at analyzing Alzheimer’s disease progression.  The dataset categorizes images into four classes based on Alzheimer’s severity: non-demented, very mild demented, mild demented, and demented, enabling the study of disease stages through clinical metadata and Clinical Dementia Rating (CDR) values.
+Originally stored as .img and .hdr files, the data were converted to NIfTI (.nii) format using FSL for compatibility.  For neural network training, 2D slices were extracted by slicing 461 patients’ 3D MRI scans along the z-axis, selecting slices 100–160 to form a comprehensive training set.  These .nii files were further converted to .jpg for model input, though this process posed technical challenges.  The final processed dataset spans 1.3 GB, offering a streamlined resource for machine learning applications.
+The dataset supports Alzheimer’s detection and analysis by providing a diverse, clinically annotated collection of brain images.  It is widely used for benchmarking neural networks in early-stage disease identification.  Researchers are encouraged to cite the OASIS-1 Cross-Sectional study
+                </p>
+                <div class="link-container">
+                    <a href="https://www.kaggle.com/datasets/ninadaithal/imagesoasis" target="_blank">
+                        Know more about the dataset
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="static/JS/Index.js"></script>
+<script>
+    const header = document.querySelector('header');
+    const img = document.querySelector('.img');
+    const backgroundPanel = document.querySelector('.background-panel');
+
+    let scrollDistance = 0;
+    let requestId = null;
+
+
+    function updateHeaderClipPath() {
+        const clipPathValue = `polygon(0 0, 100% 0%, 100% ${(scrollDistance <= 600) ? 100 - ((scrollDistance / 600) * 60) : 40}%, 0 100%)`;
+        header.style.clipPath = clipPathValue;
+        const scaleValue = 1 + ((scrollDistance / 600) * 1);
+        img.style.transform = `scale(${scaleValue})`;
+
+        // const backgroundClipPathValue = `polygon(0 0, 100% 0%, 100% ${scrollDistance / 6}% , 0 ${scrollDistance / 6}%)`;
+        // backgroundPanel.style.clipPath = backgroundClipPathValue;
+
+    }
+
+    function scrollHandler(event) {
+        factor = 4;
+        if (event.deltaY < 0) {
+            scrollDistance = Math.max(0, scrollDistance + event.deltaY * factor);
+        } else {
+            scrollDistance = Math.min(600, scrollDistance + event.deltaY * factor);
+
+        }
+        if (!requestId) {
+            requestId = window.requestAnimationFrame(() => {
+                updateHeaderClipPath();
+                requestId = null;
+            });
+        }
+    }
+
+    window.addEventListener('wheel', scrollHandler);
+
+</script>
+
+
+</html>
